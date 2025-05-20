@@ -7,24 +7,63 @@
         <title>Popular</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            .rating-bar{
+                height: 10px;
+                background-color: #e9ecef;
+                border-radius: 5px;
+                margin: 10px 0;
+                overflow: hidden;
+            }
+            .rating-progress{
+                height: 100%;
+                background: linear-gradient(90deg, #ffc107, #fd7e14);
+            }
+            .favorite-btn {
+                border: none;
+                background: none;
+                color: #6c757d;
+                font-size: 1.2rem;
+                transition: color 0.3s;
+                float: right;
+            }
+            .favorite-btn:hover, .favorite-btn.active {
+                color: #dc3545;
+            }
+
+        </style>
     </head>
 
-    <body layout:fragment="body" class="fondo">
+    <body layout:fragment="body">
 
         <div class="row justify-content-center d-flex gap-3 mt-5">
-            <h1 class="text-center">Movies</h1>
+            <h1 class="text-center">Most popular</h1>
             <div th:each="movie : ${listMovies}" class="card mb-3" style="max-width: 450px;">
+
                 <div class="row g-0">
                     <div class="col-md-4">
                         <img th:src="'https://image.tmdb.org/t/p/w500/' + ${movie.poster_path}" class="img-fluid rounded-start" alt="Image Movie">
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">
+                            <div>
+                                <button class="favorite-btn" th:data-movie-id="${movie.id}"><i class="bi bi-bookmark-heart-fill"></i>
+                            </button>
+                            </div>
                             <h5 class="card-title" th:text="${movie.title}"></h5>
-                            
-                            <p class="card-text" th:text="'Fecha de salida: '+${movie.release_date}"> </p>
+
+                            <p class="card-text" th:text="'Release Date: '+${movie.release_date}"> </p>
+                            <div class="d-flex align-items-center mb-2">
+                                <span th:text="${#numbers.formatDecimal(movie.vote_average, 1, 1)}+ '/10 '" ></span>
+                                <div class="rating-bar flex-grow-1">
+                                    <div class="rating-progress" th:style="'width:' + (${movie.vote_average}*10)+'%'">
+
+                                    </div>
+                                </div>
+                            </div>
                             
                         </div>
+
                     </div>
                 </div>
             </div>
