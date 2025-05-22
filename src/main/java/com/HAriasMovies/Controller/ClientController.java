@@ -78,5 +78,32 @@ public class ClientController {
         }
         return "redirect:/Movie";
     }
+    
+    @GetMapping
+    public String LogOut(HttpSession session, Model model){
+        String sessionId = session.getAttribute("session_id").toString();
+        try {
+            HttpHeaders httpHeader = new HttpHeaders();
+            httpHeader.setBearerAuth(token);
+            httpHeader.setContentType(MediaType.APPLICATION_JSON);
+            
+            Session sessionDTO = new Session(sessionId);
+            HttpEntity<Session> entity = new HttpEntity<>(sessionDTO,httpHeader);
+            
+            ResponseEntity<RequestLogin> outSession = restTemplate.exchange("https://api.themoviedb.org/3/authentication/session", 
+                    HttpMethod.DELETE, 
+                    entity, 
+                    new ParameterizedTypeReference<RequestLogin>(){});
+            if(outSession.getStatusCode().is2xxSuccessful()){
+                session.invalidate();
+                return "redirect:/User/login";
+            }
+        } catch (Exception e) {
+        }
+        
+        
+        return "Index";
+    }
+    
 
 }

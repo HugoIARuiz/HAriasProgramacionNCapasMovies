@@ -1,0 +1,65 @@
+
+<html xmlns:th="http://www.thyemleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+    <head>
+        <title>Detail</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            .movie-details {
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 20px;
+            }
+            .movie-poster {
+                max-width: 300px;
+                border-radius: 10px;
+            }
+            .movie-info {
+                margin-top: 20px;
+            }
+            .back-button {
+                margin-top: 20px;
+            }
+        </style>
+    </head>
+    <body layout:fragment="body">
+        <div class="container mt-5 ">
+            <a th:href="@{/Movie}" class="btn btn-primary back-button">Back to Popular Movies</a>
+            <div class="row">
+
+                <div class="col-md-4">
+                    <div class="movie-details">
+
+                        <div class="row mt-4">
+                            <div class="card-body">
+                                <div class="col-md-4">
+                                    <img th:src="'https://image.tmdb.org/t/p/w500/' + ${movie.poster_path}" class="movie-poster img-fluid" alt="Movie Poster">
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <h2 th:text="${movie.title}"></h2>
+                    <p><strong>Original Title:</strong> <span th:text="${movie.original_title}"></span></p>
+                    <p><strong>Release Date:</strong> <span th:text="${movie.release_date}"></span></p>
+                    <p><strong>Language:</strong> <span th:text="${movie.original_language}"></span></p>
+                    <div class="d-flex align-items-center mb-2">
+                        <span th:text="${#numbers.formatDecimal(movie.vote_average, 1, 1)}+ '/10 '  " ></span>
+                        <div class="rating-bar flex-grow-1">
+                            <div class="rating-progress" th:style="'width:' + (${movie.vote_average}*10)+'%'">
+
+                            </div>
+                        </div>
+                    </div>
+                    <h4>Overview</h4>
+                    <p th:text="${movie.overview}"></p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
